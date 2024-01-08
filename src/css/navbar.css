@@ -1,0 +1,17 @@
+.layout-navbar-left {
+  /* margin-left: 10rem; */
+  padding: 0rem 0 0rem 5rem;
+  /* padding: 0 0 0 0; */
+}
+
+.button-margin-right {
+  margin-right: 2rem;
+}
+
+.navbar-search-margin-left {
+  margin-left: 5rem;
+}
+
+.layout-navbar-menus {
+  font-weight: var(--bold);
+}

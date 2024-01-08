@@ -1,0 +1,11 @@
+.font-bold {
+  font-weight: var(--bold);
+}
+
+.font-light {
+  font-weight: var(--light);
+}
+
+.font-lightBold {
+  font-weight: var(--lightBold);
+}
