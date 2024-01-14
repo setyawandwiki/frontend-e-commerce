@@ -15,6 +15,18 @@
   font-size: var(--small);
 }
 
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.font-small {
+  font-size: 0.8rem;
+}
+
 html,
 body,
 div,

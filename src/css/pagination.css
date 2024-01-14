@@ -1,0 +1,25 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5rem;
+  font-size: 1rem;
+  gap: 5px;
+  list-style: none;
+  gap: 2.5rem;
+}
+
+.page-num {
+  text-decoration: none;
+  color: black;
+}
+
+.previous-num {
+  color: gray;
+  text-decoration: none;
+}
+
+.next-num {
+  color: gray;
+  text-decoration: none;
+}

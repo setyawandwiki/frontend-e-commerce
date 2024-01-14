@@ -1,0 +1,79 @@
+.underlined-text:after {
+  content: "";
+
+  width: 11.5%;
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  border-width: 0 0 3px;
+  border-style: solid;
+}
+
+.underlined-text {
+  text-decoration: none;
+  position: relative;
+}
+
+.underlined-text-button:after {
+  content: "";
+
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  border-width: 0 0 3px;
+  border-style: solid;
+}
+
+.underlined-text-button {
+  text-decoration: none;
+  position: relative;
+}
+.underlined-text-button-second:after {
+  content: "";
+
+  width: 100%;
+  position: absolute;
+  left: 0;
+  color: gray;
+  bottom: -4px;
+
+  border-width: 0 0 1px;
+  border-style: solid;
+}
+
+.underlined-text-button-second {
+  text-decoration: none;
+  position: relative;
+}
+.underlined-text-button-third:after {
+  content: "";
+
+  width: 100%;
+  position: absolute;
+  left: 0;
+  color: gray;
+  bottom: -4px;
+
+  border-width: 0 0 0.5px;
+  border-style: solid;
+}
+
+.underlined-text-button-third {
+  text-decoration: none;
+  position: relative;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none;
+  border: none !important;
+}
+
+.product-img-small {
+  height: 70vh !important;
+  margin-bottom: 5rem;
+}

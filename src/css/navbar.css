@@ -15,3 +15,37 @@
 .layout-navbar-menus {
   font-weight: var(--bold);
 }
+
+footer a {
+  text-decoration: none;
+  color: white;
+  font-size: 0.8rem;
+}
+
+footer li {
+  padding: 0.7rem 0 0 0rem;
+}
+
+.underlined-icon {
+  text-decoration: underline;
+}
+
+.navbar-menu-container {
+  align-items: baseline;
+  column-gap: 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.fontsize-small {
+  font-size: var(--small);
+}
+
+.fontsize-medium {
+  font-size: var(--medium);
+}
+
+/* .fontsize-small {
+  font-size: var(--medium);
+} */
