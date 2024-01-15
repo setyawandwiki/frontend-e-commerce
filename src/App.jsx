@@ -5,6 +5,7 @@ import "./css/landingpage.css";
 import "./css/pagination.css";
 import "./css/product.css";
 import "./css/cart.css";
+import "./css/Profile.css";
 
 import {
   Route,
@@ -19,6 +20,11 @@ import ProductDetail from "./pages/ProductDetail";
 import WishList from "./pages/WishList";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import ProfileDetail from "./pages/ProfileDetail";
+import Wallet from "./pages/Wallet";
+import History from "./pages/History";
+import Register from "./pages/Register";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,8 +35,14 @@ const router = createBrowserRouter(
         <Route path="product/:category/:id" element={<ProductDetail />} />
         <Route path="wishlist" element={<WishList />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="profile" element={<Profile />}>
+          <Route index element={<ProfileDetail />} />
+          <Route path="wallet" element={<Wallet />} />
+          <Route path="history" element={<History />} />
+        </Route>
       </Route>
       <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
     </>
   )
 );

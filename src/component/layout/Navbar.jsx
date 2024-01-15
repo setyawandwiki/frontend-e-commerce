@@ -34,7 +34,12 @@ const Navbar = () => {
               className="fs-4 navbar-menu-container"
               style={{ textDecoration: "underline" }}
             >
-              <UserOutlined className="underlined-icon" />
+              <Link
+                to="profile"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <UserOutlined className="underlined-icon" />
+              </Link>
             </div>
             <span className="">Masuk / Daftar</span>
             <Link
