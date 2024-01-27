@@ -1,3 +1,8 @@
 .line-heightCart {
   line-height: 3px;
 }
+
+.cart-img-responsive {
+  max-width: 30%;
+  height: auto;
+}

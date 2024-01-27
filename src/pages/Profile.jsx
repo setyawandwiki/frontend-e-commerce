@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
+import { getUserProfile } from "../features/user/userSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const [active, setActive] = useState("profile");
   const handleClick = (param) => {
     setActive(param);
   };
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
+
   return (
     <div className="container w-75 mt-5">
       <div className="row">
@@ -45,6 +54,21 @@ const Profile = () => {
                   Wishlist
                 </Link>
               </li>
+              {user?.user?.data?.role === "SELLER" ? (
+                <li
+                  onClick={() => handleClick("product")}
+                  className={active === "product" ? "active" : null}
+                >
+                  <Link
+                    to="product"
+                    href="#pageSubmenu"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                  >
+                    Product
+                  </Link>
+                </li>
+              ) : null}
               <li
                 onClick={() => handleClick("history")}
                 className={active === "history" ? "active" : null}

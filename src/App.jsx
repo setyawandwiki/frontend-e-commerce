@@ -6,6 +6,7 @@ import "./css/pagination.css";
 import "./css/product.css";
 import "./css/cart.css";
 import "./css/Profile.css";
+import "./css/wishlist.css";
 
 import {
   Route,
@@ -25,6 +26,12 @@ import ProfileDetail from "./pages/ProfileDetail";
 import Wallet from "./pages/Wallet";
 import History from "./pages/History";
 import Register from "./pages/Register";
+import { requireAuth } from "./requireAuth";
+import EditProfile from "./pages/EditProfile";
+import { sellerAuth } from "./sellerAuth";
+import ProductSeller from "./pages/ProductSeller";
+import EditPProductSeller from "./pages/EditPProductSeller";
+import AddProduct from "./pages/AddProduct";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,13 +39,98 @@ const router = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index element={<Homepage />} />
         <Route path="category/:category" element={<Category />} />
-        <Route path="product/:category/:id" element={<ProductDetail />} />
-        <Route path="wishlist" element={<WishList />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="profile" element={<Profile />}>
-          <Route index element={<ProfileDetail />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="history" element={<History />} />
+        <Route path="product/:id" element={<ProductDetail />} />
+        <Route
+          path="wishlist"
+          element={<WishList />}
+          loader={async () => {
+            await requireAuth();
+            return null;
+          }}
+        />
+        <Route
+          path="cart"
+          element={<Cart />}
+          loader={async () => {
+            await requireAuth();
+            return null;
+          }}
+        />
+        <Route
+          path="profile"
+          element={
+            <Profile
+              loader={async () => {
+                await requireAuth();
+                return null;
+              }}
+            />
+          }
+        >
+          <Route
+            index
+            loader={async () => {
+              await requireAuth();
+              return null;
+            }}
+            element={<ProfileDetail />}
+          />
+          <Route
+            path="edit"
+            loader={async () => {
+              await requireAuth();
+              return null;
+            }}
+            element={<EditProfile />}
+          />
+          <Route
+            path="wallet"
+            element={<Wallet />}
+            loader={async () => {
+              await requireAuth();
+              return null;
+            }}
+          />
+          <Route
+            path="history"
+            element={<History />}
+            loader={async () => {
+              await requireAuth();
+              return null;
+            }}
+          />
+          <Route
+            path="product"
+            loader={async () => {
+              await sellerAuth();
+              return null;
+            }}
+          >
+            <Route
+              index
+              element={<ProductSeller />}
+              loader={async () => {
+                await sellerAuth();
+                return null;
+              }}
+            />
+            <Route
+              path="edit/:id"
+              element={<EditPProductSeller />}
+              loader={async () => {
+                await sellerAuth();
+                return null;
+              }}
+            />
+            <Route
+              path="add"
+              element={<AddProduct />}
+              loader={async () => {
+                await sellerAuth();
+                return null;
+              }}
+            />
+          </Route>
         </Route>
       </Route>
       <Route path="login" element={<Login />} />

@@ -92,3 +92,20 @@ a.article:hover {
   background: #6d7fcc !important;
   color: #fff !important;
 }
+
+.form-group select,
+input {
+  border-radius: 0% !important;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+.form-control:focus-visible {
+  outline: none !important;
+}
+
+.form-control input {
+  background-color: white !important;
+}

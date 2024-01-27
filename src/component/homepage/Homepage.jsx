@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getProducts } from "../../features/product/productSlice";
 
 const Homepage = () => {
+  const { isLoading, isError, message, product } = useSelector(
+    (state) => state.product
+  );
+  const dispatch = useDispatch();
+
+  const getAllProducts = async () => {
+    try {
+      const data = await dispatch(getProducts());
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   return (
     <>
       <div className="container w-50">
@@ -137,118 +157,45 @@ const Homepage = () => {
       </div>
       <div className="container w-75 mt-5">
         <div className="row">
-          <Link
-            to="product/:category/:id"
-            className="col-3"
-            style={{ cursor: "pointer" }}
-          >
-            <div className="card w-100 h-100 border-0">
-              <img
-                src="https://dynamic.zacdn.com/DZeDg1KKjvw0Hh2et9myOtik-Hg=/fit-in/346x500/filters:fill(ffffff):quality(90)/https://static-id.zacdn.com/p/hush-puppies-9561-1070714-1.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <p className="text-5 my-0 font-bold">Hush puppies</p>
-                <span className="text-secondary card-text">
-                  Tako 2 basic polo
-                </span>
-                <p className="text-secondary card-text text-danger font-bold">
-                  Rp. 199.000
-                </p>
-                <button
-                  type="button"
-                  className="btn w-100 border border-1 rounded-3 py-3"
-                >
-                  Masukkan ke tas
-                </button>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="product/:category/:id"
-            className="col-3"
-            style={{ cursor: "pointer" }}
-          >
-            <div className="card w-100 h-100 border-0">
-              <img
-                src="https://dynamic.zacdn.com/DZeDg1KKjvw0Hh2et9myOtik-Hg=/fit-in/346x500/filters:fill(ffffff):quality(90)/https://static-id.zacdn.com/p/hush-puppies-9561-1070714-1.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <p className="text-5 my-0 font-bold">Hush puppies</p>
-                <span className="text-secondary card-text">
-                  Tako 2 basic polo
-                </span>
-                <p className="text-secondary card-text text-danger font-bold">
-                  Rp. 199.000
-                </p>
-                <button
-                  type="button"
-                  className="btn w-100 border border-1 rounded-3 py-3"
-                >
-                  Masukkan ke tas
-                </button>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="product/:category/:id"
-            className="col-3"
-            style={{ cursor: "pointer" }}
-          >
-            <div className="card w-100 h-100 border-0">
-              <img
-                src="https://dynamic.zacdn.com/DZeDg1KKjvw0Hh2et9myOtik-Hg=/fit-in/346x500/filters:fill(ffffff):quality(90)/https://static-id.zacdn.com/p/hush-puppies-9561-1070714-1.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <p className="text-5 my-0 font-bold">Hush puppies</p>
-                <span className="text-secondary card-text">
-                  Tako 2 basic polo
-                </span>
-                <p className="text-secondary card-text text-danger font-bold">
-                  Rp. 199.000
-                </p>
-                <button
-                  type="button"
-                  className="btn w-100 border border-1 rounded-3 py-3"
-                >
-                  Masukkan ke tas
-                </button>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="product/:category/:id"
-            className="col-3"
-            style={{ cursor: "pointer" }}
-          >
-            <div className="card w-100 h-100 border-0">
-              <img
-                src="https://dynamic.zacdn.com/DZeDg1KKjvw0Hh2et9myOtik-Hg=/fit-in/346x500/filters:fill(ffffff):quality(90)/https://static-id.zacdn.com/p/hush-puppies-9561-1070714-1.jpg"
-                className="card-img-top"
-                alt="..."
-              />
-              <div className="card-body">
-                <p className="text-5 my-0 font-bold">Hush puppies</p>
-                <span className="text-secondary card-text">
-                  Tako 2 basic polo
-                </span>
-                <p className="text-secondary card-text text-danger font-bold">
-                  Rp. 199.000
-                </p>
-                <button
-                  type="button"
-                  className="btn w-100 border border-1 rounded-3 py-3"
-                >
-                  Masukkan ke tas
-                </button>
-              </div>
-            </div>
-          </Link>
+          {product?.data?.slice(0, 4).map((elem) => {
+            return (
+              <Link
+                key={elem.id}
+                to={`product/${elem.id}`}
+                className="col-3"
+                style={{ cursor: "pointer" }}
+              >
+                <div className="card w-100 h-100 border-0">
+                  <img
+                    src={
+                      elem.image1
+                        ? `http://localhost:8080/api/v1/product/images/${elem.image1}`
+                        : "https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+                    }
+                    className="card-img-top homepage-card-img-responsive"
+                    alt="..."
+                  />
+                  <div className="card-body">
+                    <p className="text-5 my-0 font-bold">
+                      {elem.title ? elem.title : "no title"}
+                    </p>
+                    <span className="text-secondary card-text">
+                      {elem.name ? elem.name : "no name"}
+                    </span>
+                    <p className="text-secondary card-text text-danger font-bold">
+                      Rp. {elem.price}
+                    </p>
+                    <button
+                      type="button"
+                      className="btn w-100 border border-1 rounded-3 py-3"
+                    >
+                      Masukkan ke tas
+                    </button>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </>

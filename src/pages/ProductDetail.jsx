@@ -1,18 +1,91 @@
 import {
   EyeOutlined,
+  HeartFilled,
   HeartOutlined,
   PaperClipOutlined,
   StarFilled,
   TagsOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getProductDetail } from "../features/product/productSlice";
+import { getCarts, postCart } from "../features/cart/cartSlice";
+import {
+  addWishlist,
+  deleteWishList,
+  getAllWishlist,
+  getWishlistById,
+} from "../features/wishList/wishListSlice";
 
 const ProductDetail = () => {
   const [info, setInfo] = useState("info");
+  const { isLoading, isError, message, productDetail } = useSelector(
+    (state) => state.product
+  );
+
+  const navigate = useNavigate();
+
+  const wishlist = useSelector((state) => state.wishlist);
+
   const handleChange = (param) => {
     setInfo(param);
   };
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const getProduct = async (param) => {
+    try {
+      const data = await dispatch(getProductDetail(param));
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addWishlistHandler = async (id) => {
+    try {
+      await dispatch(addWishlist(id));
+      await dispatch(getAllWishlist());
+      await dispatch(getWishlistById(id));
+      navigate("/wishlist");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteWishListHandler = async (id) => {
+    try {
+      await dispatch(deleteWishList(id));
+      await dispatch(getAllWishlist());
+      return await dispatch(getWishlistById(id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCart = async (param) => {
+    try {
+      const data = await dispatch(postCart(param));
+      await dispatch(getCarts());
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCart = (param) => {
+    addCart(param);
+    dispatch(getCarts());
+  };
+
+  useEffect(() => {
+    getProduct(id);
+    dispatch(getAllWishlist());
+    dispatch(getWishlistById(id));
+  }, []);
+
+  console.log(wishlist);
+
   return (
     <div className="container">
       <div className="row">
@@ -20,14 +93,14 @@ const ProductDetail = () => {
           <div className="row">
             <div className="col-6 pr-2  pt-5 pb-3">
               <img
-                src="https://dynamic.zacdn.com/ydd6jNCI8GxBbre_GemPDagSmnk=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/hush-puppies-7121-7463814-1.jpg"
+                src={`http://localhost:8080/api/v1/product/images/${productDetail?.data?.image2}`}
                 alt=""
                 className="img-fluid"
               />
             </div>
             <div className="col-6 pr-2 pt-5 pb-3">
               <img
-                src="https://dynamic.zacdn.com/ydd6jNCI8GxBbre_GemPDagSmnk=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/hush-puppies-7121-7463814-1.jpg"
+                src={`http://localhost:8080/api/v1/product/images/${productDetail?.data?.image3}`}
                 alt=""
                 className="img-fluid"
               />
@@ -36,7 +109,7 @@ const ProductDetail = () => {
           <div className="row">
             <div className="col-12 d-flex justify-content-center">
               <img
-                src="https://dynamic.zacdn.com/ydd6jNCI8GxBbre_GemPDagSmnk=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/hush-puppies-7121-7463814-1.jpg"
+                src={`http://localhost:8080/api/v1/product/images/${productDetail?.data?.image1}`}
                 alt=""
                 className="img-fluid product-img-small"
               />
@@ -44,16 +117,16 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className="col-5 pt-5">
-          <h3 className="font-light">Hush Puppies</h3>
-          <p>Tango 4 basic polo</p>
+          <h3 className="font-light">{productDetail?.data?.title}</h3>
+          <p>{productDetail?.data?.title}</p>
           <span
             className="border px-2 w-25 d-flex align-items-center rounded border-danger font-bold text-danger"
             style={{ gap: "2px" }}
           >
             <TagsOutlined className="pt-1" />
-            <span className="">Rp 179.000</span>
+            <span className="">Rp {productDetail?.data?.price}</span>
           </span>
-          <h5 className="font-bold pt-3">Rp 179.000</h5>
+          <h5 className="font-bold pt-3">Rp {productDetail?.data?.price}</h5>
           <h5 className="font-bold pt-3">Ukuran</h5>
           <p className="underlined-text">International</p>
           <ul
@@ -99,16 +172,34 @@ const ProductDetail = () => {
           </ul>
           <div className="row w-100">
             <div className="col-10">
-              <Link type="button" className="btn btn-dark w-100 py-3">
+              <Link
+                onClick={() => handleCart(id)}
+                to="/cart"
+                type="button"
+                className="btn btn-dark w-100 py-3"
+              >
                 Masukkan ke Tas
               </Link>
             </div>
-            <div
-              className="col-2 border-dark border d-flex align-items-center justify-content-center rounded"
-              style={{ cursor: "pointer" }}
-            >
-              <HeartOutlined className="fs-4 font-light text-secondary" />
-            </div>
+            {wishlist?.wishlistDetail ? (
+              <div
+                onClick={() =>
+                  deleteWishListHandler(wishlist?.wishlistDetail?.data?.id)
+                }
+                className="col-2 border-dark border d-flex align-items-center justify-content-center rounded"
+                style={{ cursor: "pointer" }}
+              >
+                <HeartFilled className="fs-4 font-light text-danger" />
+              </div>
+            ) : (
+              <div
+                onClick={() => addWishlistHandler(productDetail?.data?.id)}
+                className="col-2 border-dark border d-flex align-items-center justify-content-center rounded"
+                style={{ cursor: "pointer" }}
+              >
+                <HeartOutlined className="fs-4 font-light text-secondary" />
+              </div>
+            )}
           </div>
           <div className="row mt-5 d-flex flex-row">
             <div className="col-6 px-0 border-0">
@@ -141,21 +232,7 @@ const ProductDetail = () => {
           <div className="row mt-5">
             {info === "about" ? (
               <div className="col-12">
-                <ul>
-                  <li>- Polo shirt desain basic untuk tampilan urban casual</li>
-                  <li>- Warna hitam</li>
-                  <li>- Detail kerah</li>
-                  <li>- Unlined</li>
-                  <li>- Regular fit</li>
-                  <li>- Kancing depan</li>
-                  <li>
-                    Material poliester kombinasi tidak transparan, ringan, dan
-                    tidak stretch
-                  </li>
-                  <li>
-                    Tinggi model 185cm, lingkar dada 97cm, mengenakan ukuran L
-                  </li>
-                </ul>
+                {productDetail?.data?.details}
                 <p>
                   Warna pada gambar dapat sedikit berbeda dengan warna asli
                   produk akibat pencahayaan saat proses photoshoot.
@@ -206,7 +283,7 @@ const ProductDetail = () => {
           <div className="row mt-5">
             <h5 className="font-bold">Penilaian & Ulasan</h5>
             <div className="d-flex justify-content-space-between align-items-center">
-              <h1>49.5 / 5</h1>
+              <h1>${productDetail?.data?.rate} / 5</h1>
               <p className="d-flex fs-3 align-items-center pt-2 px-2 text-warning">
                 <StarFilled />
               </p>
